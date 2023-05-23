@@ -1,5 +1,6 @@
 int cookies = 0;
-Enemy monster = new Enemy(100, 1, 50,#eb4034);
+int health = 100;
+Enemy monster = new Enemy(100, 1, 50,#eb4034, 5);
 Turret turret;
 
 void setup(){
@@ -26,8 +27,12 @@ stroke(#7d807d);
 rect(120 , 370, 200, 50);
 fill(#7d807d);
 noStroke();
-rect(120 , 450, 200, 50);
+rect(120 , 450, 200, 50); //UPGRADE BUTTON
+fill(#000000);
+textSize(40);
+text("UPGRADE",135, 490);
 turret = new Turret("base", width/2 - 130, height/2);
+monster.towerHealth = health;
 }
 
 void draw(){
@@ -37,6 +42,8 @@ void draw(){
    monster.attack();
    turret.turn(mouseX, mouseY);
    turret.shoot();
+   
+   health = monster.towerHealth;
    for(int iter = 0; iter < turret.bullets.size(); iter++){
       for(int i = 0; i < monster.x.size();i++){
         if(turret.bullets.get(iter).x > monster.x.get(i) 
@@ -57,6 +64,21 @@ void draw(){
         }
       }
      }
+     
+  fill(#404741);
+  stroke(#7d807d);
+  rect(15, height - 60, 405, 30);
+  fill(#5bb06a);
+  noStroke();
+  rect(18, height - 57, (400/100)*health, 26);
+     
+     if(health < 0){
+     noLoop();
+     background(#42a4f5);
+     fill(#ff4640);
+     textSize(100);
+     text("YOU LOSE :(",width/2, height/2);
+     }
    }
 
 void mouseClicked(){
@@ -72,4 +94,6 @@ void mouseClicked(){
   if(mouseX > 400){
     turret.loadBullet();
   }
+  
+  
 }

@@ -19,7 +19,7 @@ public class Turret{
     muzzle = createShape(RECT,0,-15,len,30);
     shape(muzzle, x, y);
     circle(x, y, size);
-    bullets.add(new Projectile(x, y, 20, 100, angler, "base"));
+    bullets.add(new Projectile(1000, 1000, 20, 100, angler, "base"));
   }
   
   public void turn(int mX, int mY){

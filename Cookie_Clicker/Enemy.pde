@@ -2,17 +2,20 @@ import java.util.ArrayList;
 public class Enemy{
   ArrayList<Integer> x = new ArrayList<Integer>();
   ArrayList<Integer> y = new ArrayList<Integer>();
+  int towerHealth;
   int health;
   int speed;
   int size;
   color looks;
-  int limit = 475;
+  int damage;
+  int limit = 520;
   
-  public Enemy(int hp, int spd, int sz, color shape){
+  public Enemy(int hp, int spd, int sz, color shape, int dmg){
     health = hp;
     speed = spd;
     size = sz;
     looks = shape;
+    damage = dmg;
   }
   public void spawn(){
     stroke(#529c60);
@@ -33,6 +36,7 @@ public class Enemy{
         square(x.get(index), y.get(index), size);
         x.remove(index);
         y.remove(index);
+        towerHealth -= damage;
       }
       stroke(#529c60);
       fill(looks);
