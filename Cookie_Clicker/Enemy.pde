@@ -37,6 +37,13 @@ public class Enemy{
         x.remove(index);
         y.remove(index);
         towerHealth -= damage;
+        fill(#404741);
+        stroke(#7d807d);
+        rect(15, height - 60, 405, 30);
+        fill(#5bb06a);
+        noStroke();
+        rect(18, height - 57, (400/100)*towerHealth, 26);
+   
       }
       stroke(#529c60);
       fill(looks);

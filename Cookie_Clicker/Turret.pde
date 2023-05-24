@@ -8,6 +8,9 @@ public class Turret{
   float angler;
   int x;
   int y;
+  int bulletSize = 20;
+  int bulletDamage = 100;
+  int bulletSpeed = 1;
   
   public Turret(String type, int tx, int ty){
     x = tx;
@@ -57,7 +60,19 @@ public class Turret{
    
    public void loadBullet(){
      System.out.println(angler);
-     bullets.add(new Projectile(x, y, 20, 100, angler, "base"));
+     bullets.add(new Projectile(x, y, bulletSize, 100, angler, "base"));
      bullets.get(bullets.size()-1).bullet.rotate(angler);
+   }
+   
+   public void upgradeSize(){
+     bulletSize += 3;
+   }
+   
+   public void upgradeDamage(){
+     bulletSize += 3;
+   }
+   
+   public void upgradeSpeed(){
+     bulletSize += 3;
    }
   }
