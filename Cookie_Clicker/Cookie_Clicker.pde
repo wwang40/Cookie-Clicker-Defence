@@ -3,7 +3,9 @@ int health = 100;
 Enemy monster = new Enemy(100, 1, 50,#eb4034, 5);
 Turret turret;
 boolean buttonPressed = false;
+boolean start = false;
 void setup(){
+if(start){
 size(1280, 720);
 background(#42a4f5);
 fill(#529c60);
@@ -58,9 +60,20 @@ fill(#5bb06a);
 noStroke();
 rect(18, height - 57, (400/100)*health, 26);
 }
+else{
+startScreen()
+}
+}
 
+
+void startScreen(){
+  size(1280, 720);
+  background(#42a4f5);
+  rect(width/2,height/2)
+  
+}
 void draw(){
-  if(frameCount%100 == 0){
+  if(frameCount%50 == 0){
    monster.spawn();
   }
    monster.attack();
@@ -84,6 +97,13 @@ void draw(){
           monster.y.remove(i);
           i--;
           iter--;
+          cookies++;
+          fill(#404741);
+          stroke(#7d807d);
+          rect(120 , 370, 200, 50);
+          fill(#5bb06a);
+          textSize(50);
+          text(cookies,130, 410);
           }
         }
       }
@@ -102,22 +122,22 @@ void draw(){
       noStroke();
       rect(120 , 450, 200, 50); //UPGRADE BUTTON
       fill(#000000);
-      textSize(30);
-      text("UPGRADE SIZE",125, 485);
+      textSize(20);
+      text("UPGRADE SIZE = 10",125, 485);
       
-          fill(#000000);
+          fill(#7d807d);
     noStroke();
     rect(120 , 450 + 60, 200, 50); //UPGRADE BUTTON
-    fill(#7d807d);
-    textSize(30);
-    text("UPGRADE DAMAGE",125, 485 + 60);
+    fill(#000000);
+    textSize(20);
+    text("UPGRADE DAMAGE = 20",125, 485 + 60);
     
-        fill(#000000);
+        fill(#7d807d);
     noStroke();
     rect(120 , 450+120, 200, 50); //UPGRADE BUTTON
-    fill(#7d807d);
-    textSize(30);
-    text("UPGRADE SPEED",125+120, 485);
+    fill(#000000);
+    textSize(20);
+    text("UPGRADE SPEED = 15",125, 485+120);
     
         buttonPressed = false;
      }
@@ -142,8 +162,8 @@ void mouseClicked(){
     noStroke();
     rect(120 , 450, 200, 50); //UPGRADE BUTTON
     fill(#7d807d);
-    textSize(30);
-    text("UPGRADE SIZE",125, 485);
+    textSize(20);
+    text("UPGRADE SIZE = 10",125, 485);
     buttonPressed = true;
     cookies -= 10;
     fill(#404741);
@@ -161,8 +181,8 @@ void mouseClicked(){
     noStroke();
     rect(120 , 450 + 60, 200, 50); //UPGRADE BUTTON
     fill(#7d807d);
-    textSize(30);
-    text("UPGRADE DAMAGE",125, 485 + 60);
+    textSize(20);
+    text("UPGRADE DAMAGE = 20",125, 485 + 60);
     buttonPressed = true;
     cookies -= 10;
     fill(#404741);
@@ -171,7 +191,7 @@ void mouseClicked(){
     fill(#5bb06a);
     textSize(50);
     text(cookies,130, 410);
-    turret.upgradeSize();
+    turret.upgradeDamage();
   }
   
   //upgrade speed
@@ -180,8 +200,8 @@ void mouseClicked(){
     noStroke();
     rect(120 , 450+120, 200, 50); //UPGRADE BUTTON
     fill(#7d807d);
-    textSize(30);
-    text("UPGRADE SPEED",125+120, 485);
+    textSize(20);
+    text("UPGRADE SPEED = 15",125, 485+120);
     buttonPressed = true;
     cookies -= 10;
     fill(#404741);
@@ -190,6 +210,6 @@ void mouseClicked(){
     fill(#5bb06a);
     textSize(50);
     text(cookies,130, 410);
-    turret.upgradeSize();
+    turret.upgradeSpeed();
   }
 }

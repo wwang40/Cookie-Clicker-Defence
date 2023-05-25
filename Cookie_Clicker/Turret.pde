@@ -10,7 +10,7 @@ public class Turret{
   int y;
   int bulletSize = 20;
   int bulletDamage = 100;
-  int bulletSpeed = 1;
+  float bulletSpeed = 1.0;
   
   public Turret(String type, int tx, int ty){
     x = tx;
@@ -45,11 +45,11 @@ public class Turret{
   public void shoot(){
    for(Projectile bullet: bullets){
      if(bullet.angle > 0){
-     bullet.x += cos(bullet.angle)*10;
-     bullet.y += sin(abs(bullet.angle))*10;
+     bullet.x += cos(bullet.angle)*10*bulletSpeed;
+     bullet.y += sin(abs(bullet.angle))*10*bulletSpeed;
      }else{
-     bullet.x += cos(bullet.angle)*10;
-     bullet.y -= sin(abs(bullet.angle))*10;
+     bullet.x += cos(bullet.angle)*10*bulletSpeed;
+     bullet.y -= sin(abs(bullet.angle))*10*bulletSpeed;
      }
     fill(#529f84);
     strokeWeight(5);
@@ -60,7 +60,7 @@ public class Turret{
    
    public void loadBullet(){
      System.out.println(angler);
-     bullets.add(new Projectile(x, y, bulletSize, 100, angler, "base"));
+     bullets.add(new Projectile(x, y, bulletSize, bulletDamage, angler, "base"));
      bullets.get(bullets.size()-1).bullet.rotate(angler);
    }
    
@@ -69,10 +69,10 @@ public class Turret{
    }
    
    public void upgradeDamage(){
-     bulletSize += 3;
+     bulletDamage += 20;
    }
    
    public void upgradeSpeed(){
-     bulletSize += 3;
+     bulletSpeed += 0.1;
    }
   }
