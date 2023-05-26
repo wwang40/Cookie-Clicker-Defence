@@ -52,6 +52,33 @@ public class Enemy{
     }
   }
   
+  public void mutate(int hp, int spd, int sz, color shape, int dmg){
+  increaseHealth(hp);
+  decreaseSize(sz);
+  increaseDamage(dmg);
+  changeLooks(shape);
+  increaseSpeed(spd);
+  }
   
+  private void increaseHealth(int val){
+   health += val;
+  }
+  
+  private void decreaseSize(int val){
+   size += val;
+  }
+  
+  private void increaseSpeed(int val){
+    speed += val;
+  }
+  
+  private void increaseDamage(int val){
+    damage += val;
+  }
+  
+  private void changeLooks(color look){
+    looks = look;
+  }
+ 
   
 }

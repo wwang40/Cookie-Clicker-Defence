@@ -3,9 +3,10 @@ int health = 100;
 Enemy monster = new Enemy(100, 1, 50,#eb4034, 5);
 Turret turret;
 boolean buttonPressed = false;
-boolean start = false;
+int timer = 0;
+int min = 0;
+int sec = 0;
 void setup(){
-if(start){
 size(1280, 720);
 background(#42a4f5);
 fill(#529c60);
@@ -60,20 +61,28 @@ fill(#5bb06a);
 noStroke();
 rect(18, height - 57, (400/100)*health, 26);
 }
-else{
-startScreen()
-}
-}
 
-
-void startScreen(){
-  size(1280, 720);
-  background(#42a4f5);
-  rect(width/2,height/2)
-  
-}
 void draw(){
-  if(frameCount%50 == 0){
+  if(frameCount%60 == 0){
+    sec++;
+    fill(#42a4f5);
+    noStroke();
+    rect(0,0,150,50);
+    fill(#FFFFFF);
+    textSize(40);
+    text(min + ":" + sec,30, 40);
+  }
+  if(sec%60==0 && sec != 0){
+  min++;
+  }
+  
+  if(sec%30==0 && sec != 0){
+  min++;//public void mutate(int hp, int spd, int sz, color shape, int dmg)
+  color ranColor = #529c60;
+  monster.mutate(100, 0.1, 1, ranColor, 10);
+  }
+  
+  if(frameCount%60 == 0){
    monster.spawn();
   }
    monster.attack();
@@ -83,10 +92,14 @@ void draw(){
    health = monster.towerHealth;
    for(int iter = 0; iter < turret.bullets.size(); iter++){
       for(int i = 0; i < monster.x.size();i++){
-        if(turret.bullets.get(iter).x > monster.x.get(i) 
+        if((turret.bullets.get(iter).x > monster.x.get(i) 
         && turret.bullets.get(iter).x < monster.x.get(i) + monster.size
         && turret.bullets.get(iter).y > monster.y.get(i) 
-        && turret.bullets.get(iter).y < monster.y.get(i) + monster.size){
+        && turret.bullets.get(iter).y < monster.y.get(i) + monster.size)
+        || turret.bullets.get(iter).x > monster.x.get(i) 
+        && turret.bullets.get(iter).x + turret.bulletSize < monster.x.get(i)
+        && turret.bullets.get(iter).y > monster.y.get(i) 
+        && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i)){
           monster.health -= turret.bullets.get(iter).damage;
           if(monster.health <= 0){
           fill(#f1f505);
