@@ -3,6 +3,7 @@ public class Enemy{
   ArrayList<Integer> x = new ArrayList<Integer>();
   ArrayList<Integer> y = new ArrayList<Integer>();
   int towerHealth;
+  ArrayList<Integer> healths = new ArrayList<Integer>();
   int health;
   int speed;
   int size;
@@ -22,6 +23,8 @@ public class Enemy{
     fill(looks);
     x.add(width);
     y.add((int)random(0, height + 1));
+    healths.add(health/60);
+    System.out.println(health);
     square(x.get(x.size() - 1), y.get(y.size() - 1), size);
   }
   

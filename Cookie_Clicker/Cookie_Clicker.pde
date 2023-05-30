@@ -1,6 +1,6 @@
 int cookies = 0;
 int health = 100;
-Enemy monster = new Enemy(100, 1, 50,#eb4034, 5);
+Enemy monster = new Enemy(6000, 1, 50,#eb4034, 5);
 Turret turret;
 boolean buttonPressed = false;
 int timer = 0;
@@ -74,12 +74,13 @@ void draw(){
   }
   if(sec%60==0 && sec != 0){
   min++;
+  sec = 0;
   }
   
   if(sec%30==0 && sec != 0){
-  min++;//public void mutate(int hp, int spd, int sz, color shape, int dmg)
-  color ranColor = #529c60;
-  monster.mutate(100, 0.1, 1, ranColor, 10);
+  //public void mutate(int hp, int spd, int sz, color shape, int dmg)
+  color ranColor = color((int)random (0, 255), (int)random (0, 255), (int)random (0, 255));
+  monster = new Enemy(monster.health + 100, monster.speed, monster.size + 1, ranColor, monster.damage + 1);
   }
   
   if(frameCount%60 == 0){
@@ -100,8 +101,10 @@ void draw(){
         && turret.bullets.get(iter).x + turret.bulletSize < monster.x.get(i)
         && turret.bullets.get(iter).y > monster.y.get(i) 
         && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i)){
-          monster.health -= turret.bullets.get(iter).damage;
-          if(monster.health <= 0){
+          monster.healths.set(i, monster.healths.get(i) - turret.bullets.get(iter).damage);
+         // System.out.println(monster.healths.get(i));
+          if(monster.healths.get(i) <= 0){
+            monster.healths.remove(i);
           fill(#f1f505);
           textSize(25);
           text(turret.bullets.get(iter).damage,monster.x.get(i), monster.y.get(i));
@@ -117,6 +120,13 @@ void draw(){
           fill(#5bb06a);
           textSize(50);
           text(cookies,130, 410);
+          }else{
+          fill(#f1f505);
+          textSize(25);
+          text(turret.bullets.get(iter).damage,monster.x.get(i), monster.y.get(i));
+          turret.bullets.remove(iter);
+          iter--;
+          
           }
         }
       }

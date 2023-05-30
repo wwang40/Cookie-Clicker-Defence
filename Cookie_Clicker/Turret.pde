@@ -59,7 +59,6 @@ public class Turret{
   }
    
    public void loadBullet(){
-     System.out.println(angler);
      bullets.add(new Projectile(x, y, bulletSize, bulletDamage, angler, "base"));
      bullets.get(bullets.size()-1).bullet.rotate(angler);
    }
