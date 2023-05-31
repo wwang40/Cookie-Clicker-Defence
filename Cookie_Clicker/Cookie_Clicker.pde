@@ -6,8 +6,14 @@ boolean buttonPressed = false;
 int timer = 0;
 int min = 0;
 int sec = 0;
+boolean start = false;
+PImage img;
+
 void setup(){
 size(1280, 720);
+background(#42a4f5);
+img = loadImage("startScreen.jpg");
+if(start){
 background(#42a4f5);
 fill(#529c60);
 stroke(#529c60);
@@ -61,8 +67,11 @@ fill(#5bb06a);
 noStroke();
 rect(18, height - 57, (400/100)*health, 26);
 }
+}
 
 void draw(){
+  image(img, 0, 0);
+  if(start){
   if(frameCount%60 == 0){
     sec++;
     fill(#42a4f5);
@@ -165,8 +174,10 @@ void draw(){
         buttonPressed = false;
      }
    }
-
+}
 void mouseClicked(){
+  
+  if(start){
   if(mouseX > 70 && mouseX < 370 && mouseY > 50 && mouseY < 350){
    cookies++;
    fill(#404741);
@@ -234,5 +245,8 @@ void mouseClicked(){
     textSize(50);
     text(cookies,130, 410);
     turret.upgradeSpeed();
+  }
+  }else{
+  if(mouseX - width/2 < 50)
   }
 }
