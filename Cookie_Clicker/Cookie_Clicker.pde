@@ -1,6 +1,6 @@
 int cookies = 0;
 int health = 100;
-Enemy monster = new Enemy(6000, 1, 50,#eb4034, 5);
+Enemy monster = new Enemy(6000, 60, 50,#eb4034, 5);
 Turret turret;
 boolean buttonPressed = false;
 int timer = 0;
@@ -8,12 +8,17 @@ int min = 0;
 int sec = 0;
 boolean start = false;
 PImage img;
+import processing.sound.*;
+SoundFile hit;
+SoundFile shoot;
+SoundFile upgrade;
 
 void setup(){
-size(1280, 720);
-background(#42a4f5);
-img = loadImage("startScreen.jpg");
+  size(1280, 720);
 if(start){
+  hit = new SoundFile(this, "hit.mp3");
+  shoot = new SoundFile(this, "shoot.mp3");
+  upgrade = new SoundFile(this, "upgrade.mp3");
 background(#42a4f5);
 fill(#529c60);
 stroke(#529c60);
@@ -66,11 +71,12 @@ rect(15, height - 60, 405, 30);
 fill(#5bb06a);
 noStroke();
 rect(18, height - 57, (400/100)*health, 26);
+}else{
+img = loadImage("startScreen.jpg");
 }
 }
 
 void draw(){
-  image(img, 0, 0);
   if(start){
   if(frameCount%60 == 0){
     sec++;
@@ -86,10 +92,10 @@ void draw(){
   sec = 0;
   }
   
-  if(sec%30==0 && sec != 0){
+  if(sec%20==0 && sec != 0){
   //public void mutate(int hp, int spd, int sz, color shape, int dmg)
   color ranColor = color((int)random (0, 255), (int)random (0, 255), (int)random (0, 255));
-  monster = new Enemy(monster.health + 100, monster.speed, monster.size + 1, ranColor, monster.damage + 1);
+  monster.mutate(100, 1, 1, ranColor, 0);
   }
   
   if(frameCount%60 == 0){
@@ -173,6 +179,8 @@ void draw(){
     
         buttonPressed = false;
      }
+   }else{
+   image(img, 0, 0);
    }
 }
 void mouseClicked(){
@@ -189,6 +197,7 @@ void mouseClicked(){
   }
   if(mouseX > 400){
     turret.loadBullet();
+    shoot.play();
   }
   //upgrade size
   if(mouseX > 120 && mouseY > 450 && mouseX<120 + 200 && mouseY < 450+50 && cookies >= 10){
@@ -247,6 +256,80 @@ void mouseClicked(){
     turret.upgradeSpeed();
   }
   }else{
-  if(mouseX - width/2 < 50)
+  if(mouseX - width/2 < 50){
+    start = true;
+    setup();
   }
+  }
+}
+
+void keyPressed(){
+  
+  if(key == '4'){
+   cookies++;
+   fill(#404741);
+  stroke(#7d807d);
+  rect(120 , 370, 200, 50);
+  fill(#5bb06a);
+  textSize(50);
+  text(cookies,130, 410);
+  }
+  
+  //upgrade size
+  if(key == '1' && cookies >= 10){
+    fill(#000000);
+    noStroke();
+    rect(120 , 450, 200, 50); //UPGRADE BUTTON
+    fill(#7d807d);
+    textSize(20);
+    text("UPGRADE SIZE = 10",125, 485);
+    buttonPressed = true;
+    cookies -= 10;
+    fill(#404741);
+    stroke(#7d807d);
+    rect(120 , 370, 200, 50);
+    fill(#5bb06a);
+    textSize(50);
+    text(cookies,130, 410);
+    turret.upgradeSize();
+  }
+  
+  //upgrade dmg
+  if(key == '2' && cookies >= 20){
+    fill(#000000);
+    noStroke();
+    rect(120 , 450 + 60, 200, 50); //UPGRADE BUTTON
+    fill(#7d807d);
+    textSize(20);
+    text("UPGRADE DAMAGE = 20",125, 485 + 60);
+    buttonPressed = true;
+    cookies -= 10;
+    fill(#404741);
+    stroke(#7d807d);
+    rect(120 , 370, 200, 50);
+    fill(#5bb06a);
+    textSize(50);
+    text(cookies,130, 410);
+    turret.upgradeDamage();
+  }
+  
+  //upgrade speed
+  if(key == '3' && cookies >= 15){
+    fill(#000000);
+    noStroke();
+    rect(120 , 450+120, 200, 50); //UPGRADE BUTTON
+    fill(#7d807d);
+    textSize(20);
+    text("UPGRADE SPEED = 15",125, 485+120);
+    buttonPressed = true;
+    cookies -= 10;
+    fill(#404741);
+    stroke(#7d807d);
+    rect(120 , 370, 200, 50);
+    fill(#5bb06a);
+    textSize(50);
+    text(cookies,130, 410);
+    turret.upgradeSpeed();
+  }
+
 }

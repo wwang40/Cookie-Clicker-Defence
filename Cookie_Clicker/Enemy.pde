@@ -24,7 +24,6 @@ public class Enemy{
     x.add(width);
     y.add((int)random(0, height + 1));
     healths.add(health/60);
-    System.out.println(health);
     square(x.get(x.size() - 1), y.get(y.size() - 1), size);
   }
   
@@ -50,8 +49,10 @@ public class Enemy{
       }
       stroke(#529c60);
       fill(looks);
-      x.set(index, x.get(index) - speed);
+      if(index != 0){
+      x.set(index, x.get(index) - speed/60);
       square(x.get(index), y.get(index), size);
+      }
     }
   }
   
