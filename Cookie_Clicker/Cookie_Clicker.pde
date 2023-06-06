@@ -9,8 +9,11 @@ int sec = 0;
 boolean start = false;
 PImage img;
 PImage grass;
+int autoClick;
+PImage gear;
 
 void setup(){
+  gear = loadImage("gear.png");
   size(1280, 720);
 if(start){
 background(#42a4f5);
@@ -48,7 +51,7 @@ noStroke();
 rect(120, 450 + 60, 200, 50); //UPGRADE BUTTON DAMAGE
 fill(#000000);
 textSize(20);
-text("UPGRADE DAMAGE = 20",125, 485 + 60);
+text("UPGRADE DAMAGE = 10",125, 485 + 60);
 
 fill(#7d807d);
 noStroke();
@@ -56,6 +59,16 @@ rect(120, 450 + 120, 200, 50); //UPGRADE BUTTON SPEED
 fill(#000000);
 textSize(20);
 text("UPGRADE SPEED = 15",125, 485 + 120);
+
+fill(#7d807d);
+noStroke();
+rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
+fill(#000000);
+textSize(20);
+text("AUTO = 20",335, 480);
+gear.resize(150,150);
+image(gear,305,480);
+
 
 turret = new Turret("base", width/2 - 130, height/2);
 
@@ -74,7 +87,8 @@ img = loadImage("startScreen.jpg");
 
 void draw(){
   if(start){
-  if(frameCount%60 == 0){
+    if(health>0){
+  if(frameCount%20 == 0){
     sec++;
     fill(#42a4f5);
     noStroke();
@@ -83,6 +97,17 @@ void draw(){
     textSize(40);
     text(min + ":" + sec,30, 40);
   }
+  
+  if(frameCount%60 == 0){
+    cookies += autoClick; 
+    fill(#404741);
+  stroke(#7d807d);
+  rect(120 , 370, 200, 50);
+  fill(#5bb06a);
+  textSize(50);
+  text(cookies,130, 410);
+  }
+  
   if(sec%60==0 && sec != 0){
   min++;
   sec = 0;
@@ -113,10 +138,10 @@ void draw(){
         && turret.bullets.get(iter).x < monster.x.get(i) + monster.size
         && turret.bullets.get(iter).y > monster.y.get(i) 
         && turret.bullets.get(iter).y < monster.y.get(i) + monster.size)
-        || turret.bullets.get(iter).x > monster.x.get(i) 
+        || (turret.bullets.get(iter).x > monster.x.get(i) 
         && turret.bullets.get(iter).x + turret.bulletSize < monster.x.get(i)
         && turret.bullets.get(iter).y > monster.y.get(i) 
-        && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i)){
+        && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i))){
           monster.healths.set(i, monster.healths.get(i) - turret.bullets.get(iter).damage);
          // System.out.println(monster.healths.get(i));
           if(monster.healths.get(i) <= 0){
@@ -147,16 +172,17 @@ void draw(){
         }
       }
      }
-       
-     if(health < 0){
-     noLoop();
-     background(#42a4f5);
-     fill(#ff4640);
-     textSize(100);
-     text("YOU LOSE :(",width/2, height/2);
-     }
      
      if(buttonPressed){
+       fill(#7d807d);
+       noStroke();
+       rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
+       fill(#000000);
+       textSize(20);
+       text("AUTO = 20",335, 480);
+       gear.resize(150,150);
+       image(gear,305,480);
+       
        fill(#7d807d);
       noStroke();
       rect(120 , 450, 200, 50); //UPGRADE BUTTON
@@ -180,13 +206,44 @@ void draw(){
     
         buttonPressed = false;
      }
-   }else{
+   }
+  }
+   else{
    image(img, 0, 0);
    }
+   if(health <= 0){
+     background(#42a4f5);
+     fill(#ff4640);
+     textSize(100);
+     text("Press R to restart",width/2 - 300, 80);
+     text("YOU LOSE :(",width/2 - 200, height/2);
+     int seconds = min * 60 + sec;
+     text("You survived: " + seconds + " seconds",width/2 - 500, height/2 + 200);
+     start = false;
+     }
 }
 void mouseClicked(){
-  
+  fill(#7d807d);
+noStroke();
+rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
+fill(#000000);
+textSize(20);
+text("AUTO = 20",335, 480);
+gear.resize(150,150);
+image(gear,305,480);
   if(start){
+    if(mouseX > 330 && mouseX < 430 && mouseY > 450 && mouseY < 650){
+      fill(#404741);
+      noStroke();
+      rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
+      fill(#000000);
+      textSize(20);
+      text("AUTO = 20",335, 480);
+      gear.resize(150,150);
+      image(gear,305,480);
+      buttonPressed = true;
+      autoClick++; 
+    }
   if(mouseX > 70 && mouseX < 370 && mouseY > 50 && mouseY < 350){
    cookies++;
    fill(#404741);
@@ -256,7 +313,7 @@ void mouseClicked(){
     turret.upgradeSpeed();
   }
   }else{
-  if(mouseX - width/2 < 50 && mouseY > height/2){
+  if(mouseX - width/2 < 100 && mouseY > height/2){
     start = true;
     setup();
   }
@@ -264,8 +321,12 @@ void mouseClicked(){
 }
 
 void keyPressed(){
-  
   //upgrade size
+  if(key == 'r'){
+  health = 100;
+  cookies = 100;
+  monster = new Enemy(6000, 60, 200,#eb4034, 5);
+  }
   if(key == '1' && cookies >= 10){
     fill(#000000);
     noStroke();
