@@ -1,6 +1,6 @@
 int cookies = 0;
 int health = 100;
-Enemy monster = new Enemy(6000, 60, 50,#eb4034, 5);
+Enemy monster = new Enemy(6000, 60, 200,#eb4034, 5);
 Turret turret;
 boolean buttonPressed = false;
 int timer = 0;
@@ -8,21 +8,17 @@ int min = 0;
 int sec = 0;
 boolean start = false;
 PImage img;
-import processing.sound.*;
-SoundFile hit;
-SoundFile shoot;
-SoundFile upgrade;
+PImage grass;
 
 void setup(){
   size(1280, 720);
 if(start){
-  hit = new SoundFile(this, "hit.mp3");
-  shoot = new SoundFile(this, "shoot.mp3");
-  upgrade = new SoundFile(this, "upgrade.mp3");
 background(#42a4f5);
-fill(#529c60);
-stroke(#529c60);
+fill(#a7d889);
+stroke(#a7d889);
 rect(width/2 - 200, 0, width/2 + 200,height); //grass
+grass = loadImage("grass.jpg");
+image(grass,width/2 - 200, 0);
 fill(#7d8c80);
 stroke(#7d8c80);
 rect(width/2 - 200, 0, 160,height); //wall
@@ -92,10 +88,15 @@ void draw(){
   sec = 0;
   }
   
-  if(sec%20==0 && sec != 0){
+  if(sec%10==0 && sec != 0){
   //public void mutate(int hp, int spd, int sz, color shape, int dmg)
-  color ranColor = color((int)random (0, 255), (int)random (0, 255), (int)random (0, 255));
-  monster.mutate(100, 1, 1, ranColor, 0);
+    color ranColor = color((int)random (0, 255), (int)random (0, 255), (int)random (0, 255));
+  if(monster.size < 30){
+  monster.mutate(100, 1, 0, ranColor, 0);
+  }
+  else{
+  monster.mutate(100, 1, -1, ranColor, 0);
+  }
   }
   
   if(frameCount%60 == 0){
@@ -168,7 +169,7 @@ void draw(){
     rect(120 , 450 + 60, 200, 50); //UPGRADE BUTTON
     fill(#000000);
     textSize(20);
-    text("UPGRADE DAMAGE = 20",125, 485 + 60);
+    text("UPGRADE DAMAGE = 10",125, 485 + 60);
     
         fill(#7d807d);
     noStroke();
@@ -197,7 +198,6 @@ void mouseClicked(){
   }
   if(mouseX > 400){
     turret.loadBullet();
-    shoot.play();
   }
   //upgrade size
   if(mouseX > 120 && mouseY > 450 && mouseX<120 + 200 && mouseY < 450+50 && cookies >= 10){
@@ -219,13 +219,13 @@ void mouseClicked(){
   }
   
   //upgrade dmg
-  if(mouseX > 120 && mouseY > 450 + 60 && mouseX<120 + 200 && mouseY < 450+50 + 60 && cookies >= 20){
+  if(mouseX > 120 && mouseY > 450 + 60 && mouseX<120 + 200 && mouseY < 450+50 + 60 && cookies >= 10){
     fill(#000000);
     noStroke();
     rect(120 , 450 + 60, 200, 50); //UPGRADE BUTTON
     fill(#7d807d);
     textSize(20);
-    text("UPGRADE DAMAGE = 20",125, 485 + 60);
+    text("UPGRADE DAMAGE = 10",125, 485 + 60);
     buttonPressed = true;
     cookies -= 10;
     fill(#404741);
@@ -246,7 +246,7 @@ void mouseClicked(){
     textSize(20);
     text("UPGRADE SPEED = 15",125, 485+120);
     buttonPressed = true;
-    cookies -= 10;
+    cookies -= 15;
     fill(#404741);
     stroke(#7d807d);
     rect(120 , 370, 200, 50);
@@ -256,7 +256,7 @@ void mouseClicked(){
     turret.upgradeSpeed();
   }
   }else{
-  if(mouseX - width/2 < 50){
+  if(mouseX - width/2 < 50 && mouseY > height/2){
     start = true;
     setup();
   }
@@ -264,16 +264,6 @@ void mouseClicked(){
 }
 
 void keyPressed(){
-  
-  if(key == '4'){
-   cookies++;
-   fill(#404741);
-  stroke(#7d807d);
-  rect(120 , 370, 200, 50);
-  fill(#5bb06a);
-  textSize(50);
-  text(cookies,130, 410);
-  }
   
   //upgrade size
   if(key == '1' && cookies >= 10){
@@ -295,13 +285,13 @@ void keyPressed(){
   }
   
   //upgrade dmg
-  if(key == '2' && cookies >= 20){
+  if(key == '2' && cookies >= 10){
     fill(#000000);
     noStroke();
     rect(120 , 450 + 60, 200, 50); //UPGRADE BUTTON
     fill(#7d807d);
     textSize(20);
-    text("UPGRADE DAMAGE = 20",125, 485 + 60);
+    text("UPGRADE DAMAGE = 10",125, 485 + 60);
     buttonPressed = true;
     cookies -= 10;
     fill(#404741);
@@ -322,7 +312,7 @@ void keyPressed(){
     textSize(20);
     text("UPGRADE SPEED = 15",125, 485+120);
     buttonPressed = true;
-    cookies -= 10;
+    cookies -= 15;
     fill(#404741);
     stroke(#7d807d);
     rect(120 , 370, 200, 50);
@@ -332,4 +322,16 @@ void keyPressed(){
     turret.upgradeSpeed();
   }
 
+}
+
+void keyReleased(){
+  if(key == ' '){
+   cookies++;
+   fill(#404741);
+  stroke(#7d807d);
+  rect(120 , 370, 200, 50);
+  fill(#5bb06a);
+  textSize(50);
+  text(cookies,130, 410);
+  }
 }

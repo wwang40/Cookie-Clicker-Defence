@@ -10,7 +10,7 @@ public class Enemy{
   color looks;
   int damage;
   int limit = 520;
-  
+  PImage grass;
   public Enemy(int hp, int spd, int sz, color shape, int dmg){
     health = hp;
     speed = spd;
@@ -28,8 +28,8 @@ public class Enemy{
   }
   
   public void attack(){
-    fill(#529c60);
-  stroke(#529c60);
+    fill(#a7d889);
+  stroke(#a7d889);
   rect(width/2 - 200, 0, width/2 + 200,height);
     for(int index = 0; index < x.size(); index++){
       if(x.get(index) - 1 < limit){
