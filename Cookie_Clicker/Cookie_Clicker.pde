@@ -11,9 +11,11 @@ PImage img;
 PImage grass;
 int autoClick;
 PImage gear;
-
+PImage cross;
+int healCost = 10;
 void setup(){
   gear = loadImage("gear.png");
+  cross = loadImage("health.png");
   size(1280, 720);
 if(start){
 background(#42a4f5);
@@ -69,6 +71,14 @@ text("AUTO = 20",335, 480);
 gear.resize(150,150);
 image(gear,305,480);
 
+fill(#7d807d);
+noStroke();
+rect(7, 450, 100, 200); //HEAL BUTTON
+fill(#000000);
+textSize(20);
+text("HEAL = " + healCost,13, 480);
+cross.resize(90,90);
+image(cross,13,500);
 
 turret = new Turret("base", width/2 - 130, height/2);
 
@@ -88,8 +98,10 @@ img = loadImage("startScreen.jpg");
 void draw(){
   if(start){
     if(health>0){
-  if(frameCount%20 == 0){
+  if(frameCount%60 == 0){
     sec++;
+  }
+  if(frameCount%60 == 0){
     fill(#42a4f5);
     noStroke();
     rect(0,0,150,50);
@@ -97,7 +109,6 @@ void draw(){
     textSize(40);
     text(min + ":" + sec,30, 40);
   }
-  
   if(frameCount%60 == 0){
     cookies += autoClick; 
     fill(#404741);
@@ -134,6 +145,8 @@ void draw(){
    health = monster.towerHealth;
    for(int iter = 0; iter < turret.bullets.size(); iter++){
       for(int i = 0; i < monster.x.size();i++){
+        int monsterCenterX = monster.x.get(i) + monster.size/2;
+        int monsterCenterY = monster.y.get(i) + monster.size/2;
         if((turret.bullets.get(iter).x > monster.x.get(i) 
         && turret.bullets.get(iter).x < monster.x.get(i) + monster.size
         && turret.bullets.get(iter).y > monster.y.get(i) 
@@ -141,7 +154,8 @@ void draw(){
         || (turret.bullets.get(iter).x > monster.x.get(i) 
         && turret.bullets.get(iter).x + turret.bulletSize < monster.x.get(i)
         && turret.bullets.get(iter).y > monster.y.get(i) 
-        && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i))){
+        && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i))
+        || (abs(turret.bullets.get(iter).x - monsterCenterX)< turret.bullets.get(iter).size && abs(turret.bullets.get(iter).y - monsterCenterY)<turret.bullets.get(iter).size )){
           monster.healths.set(i, monster.healths.get(i) - turret.bullets.get(iter).damage);
          // System.out.println(monster.healths.get(i));
           if(monster.healths.get(i) <= 0){
@@ -174,6 +188,15 @@ void draw(){
      }
      
      if(buttonPressed){
+      fill(#7d807d);
+      noStroke();
+      rect(7, 450, 100, 200); //HEAL BUTTON
+       fill(#000000);
+        textSize(20);
+      text("HEAL = " + healCost,13, 480);
+      cross.resize(90,90);
+       image(cross,13,500);
+       
        fill(#7d807d);
        noStroke();
        rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
@@ -223,16 +246,40 @@ void draw(){
      }
 }
 void mouseClicked(){
-  fill(#7d807d);
+
+  if(start){
+fill(#7d807d);
 noStroke();
-rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
+rect(7, 450, 100, 200); //HEAL BUTTON
 fill(#000000);
 textSize(20);
-text("AUTO = 20",335, 480);
-gear.resize(150,150);
-image(gear,305,480);
-  if(start){
-    if(mouseX > 330 && mouseX < 430 && mouseY > 450 && mouseY < 650){
+text("HEAL = " + healCost,13, 480);
+cross.resize(90,90);
+image(cross,13,500);
+
+    if(mouseX > 7 && mouseX < 107 && mouseY > 450 && mouseY < 650 && cookies >= healCost && health <= 90){
+      fill(#404741);
+      noStroke();
+      rect(7, 450, 100, 200); //HEAL BUTTON
+      fill(#000000);
+      textSize(20);
+      text("HEAL = " + healCost,13, 480);
+      cross.resize(90,90);
+      image(cross,13,500);
+      health += 10;
+      healCost += 10;
+      cookies -= healCost;
+      buttonPressed = true;
+      monster.towerHealth = health;
+    fill(#404741);
+        stroke(#7d807d);
+        rect(15, height - 60, 405, 30);
+        fill(#5bb06a);
+        noStroke();
+        rect(18, height - 57, (400/100)*health, 26);
+    }
+    
+    if(mouseX > 330 && mouseX < 430 && mouseY > 450 && mouseY < 650 && cookies >= 20){
       fill(#404741);
       noStroke();
       rect(330, 450, 100, 200); //UPGRADE BUTTON AUTO
@@ -241,6 +288,7 @@ image(gear,305,480);
       text("AUTO = 20",335, 480);
       gear.resize(150,150);
       image(gear,305,480);
+      cookies -= 20;
       buttonPressed = true;
       autoClick++; 
     }
@@ -324,7 +372,9 @@ void keyPressed(){
   //upgrade size
   if(key == 'r'){
   health = 100;
-  cookies = 100;
+  cookies = 0;
+  sec = 0;
+  min = 0;
   monster = new Enemy(6000, 60, 200,#eb4034, 5);
   }
   if(key == '1' && cookies >= 10){

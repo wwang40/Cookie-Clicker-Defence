@@ -68,7 +68,7 @@ public class Turret{
    }
    
    public void upgradeDamage(){
-     bulletDamage += 20;
+     bulletDamage += 100;
    }
    
    public void upgradeSpeed(){
