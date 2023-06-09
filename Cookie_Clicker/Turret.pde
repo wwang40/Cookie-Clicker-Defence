@@ -1,3 +1,4 @@
+boolean isAimed = false;
 public class Turret{
   int level;
   ArrayList<Projectile> bullets = new ArrayList<Projectile>();
@@ -29,6 +30,22 @@ public class Turret{
     mY = mY - y;
     mX = mX - x;
     float angle = atan((float)mY/mX);
+    if(angle==angler){
+      angler = angle;
+    fill(#7d8c80);
+    stroke(#7d8c80);
+    rect(width/2 - 200, 0, 160,height);
+    muzzle.rotate(angle);
+    fill(#529f84);
+    strokeWeight(5);
+    stroke(#9f526d);
+    shape(muzzle, x, y);
+    circle(x, y, size);
+    muzzle.rotate(-angle);
+      fill(#1efb05);
+      circle(x,y,40);
+      isAimed = true;
+    }else{
     angler = angle;
     fill(#7d8c80);
     stroke(#7d8c80);
@@ -40,24 +57,27 @@ public class Turret{
     shape(muzzle, x, y);
     circle(x, y, size);
     muzzle.rotate(-angle);
+    isAimed = false;
+    }
   }
   
-  public void shoot(){
-   for(Projectile bullet: bullets){
-     if(bullet.angle > 0){
-     bullet.x += cos(bullet.angle)*10*bulletSpeed;
-     bullet.y += sin(abs(bullet.angle))*10*bulletSpeed;
-     }else{
-     bullet.x += cos(bullet.angle)*10*bulletSpeed;
-     bullet.y -= sin(abs(bullet.angle))*10*bulletSpeed;
-     }
-    fill(#529f84);
-    strokeWeight(5);
-    stroke(#9f526d);
-     shape(bullet.bullet, bullet.x, bullet.y);
-   }
-  }
    
+   public void shoot(){
+    for(Projectile bullet: bullets){
+        if(bullet.angle > 0){
+            bullet.x += cos(bullet.angle)*10*bulletSpeed;
+            bullet.y += sin(abs(bullet.angle))*10*bulletSpeed;
+        }else{
+            bullet.x += cos(bullet.angle)*10*bulletSpeed;
+            bullet.y -= sin(abs(bullet.angle))*10*bulletSpeed;
+        }
+        fill(#529f84);
+        strokeWeight(5);
+        stroke(#9f526d);
+        shape(bullet.bullet, bullet.x, bullet.y);
+    }
+}
+
    public void loadBullet(){
      bullets.add(new Projectile(x, y, bulletSize, bulletDamage, angler, "base"));
      bullets.get(bullets.size()-1).bullet.rotate(angler);

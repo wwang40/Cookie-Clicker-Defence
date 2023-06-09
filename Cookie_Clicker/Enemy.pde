@@ -10,7 +10,6 @@ public class Enemy{
   color looks;
   int damage;
   int limit = 520;
-  PImage grass;
   public Enemy(int hp, int spd, int sz, color shape, int dmg){
     health = hp;
     speed = spd;
@@ -26,7 +25,7 @@ public class Enemy{
     healths.add(health/60);
     square(x.get(x.size() - 1), y.get(y.size() - 1), size);
   }
-  
+
   public void attack(){
     fill(#a7d889);
   stroke(#a7d889);
@@ -55,13 +54,22 @@ public class Enemy{
       }
     }
   }
-  
+
   public void mutate(int hp, int spd, int sz, color shape, int dmg){
+    int frames = 0;
+    frames++;
   increaseHealth(hp);
   decreaseSize(sz);
   increaseDamage(dmg);
   changeLooks(shape);
   increaseSpeed(spd);
+  if(frames == 60){
+     int healthSize = healths.size();
+   for(int i = 0; i < healthSize; i++){
+     healths.set(i,health);
+   }
+   frames = 0;
+   }
   }
   
   private void increaseHealth(int val){
