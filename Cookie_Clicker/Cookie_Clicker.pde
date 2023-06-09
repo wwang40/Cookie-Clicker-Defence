@@ -144,15 +144,7 @@ void draw(){
    turret.shoot();
    
    health = monster.towerHealth;
-   /*(turret.bullets.get(iter).x > monster.x.get(i) 
-        && turret.bullets.get(iter).x < monster.x.get(i) + monster.size
-        && turret.bullets.get(iter).y > monster.y.get(i) 
-        && turret.bullets.get(iter).y < monster.y.get(i) + monster.size)
-        || (turret.bullets.get(iter).x > monster.x.get(i) 
-        && turret.bullets.get(iter).x + turret.bulletSize < monster.x.get(i)
-        && turret.bullets.get(iter).y > monster.y.get(i) 
-        && turret.bullets.get(iter).y + turret.bulletSize < monster.y.get(i))
-        || (abs(turret.bullets.get(iter).x - monsterCenterX)< turret.bullets.get(iter).size && abs(turret.bullets.get(iter).y - monsterCenterY)<turret.bullets.get(iter).size )*/
+   
    //checks for collision between bullets and monsters
    for(int iter = 0; iter < turret.bullets.size(); iter++){
       for(int i = 0; i < monster.x.size();i++){
